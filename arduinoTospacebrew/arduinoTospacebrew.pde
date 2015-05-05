@@ -1,7 +1,7 @@
 import spacebrew.*;
 import processing.serial.*;
 
-String server = "sandbox.spacebrew.cc";
+String server = "localhost";
 String name = " Arduino Simulated Camera Controller " + floor(random(1000));
 String description = "Reading Accelerometer data and button trigger";
 
@@ -42,7 +42,8 @@ void setup() {
 
   // print list of serial devices to console
   println(Serial.list());
-  myPort = new Serial(this, Serial.list()[7], 9600); // CONFIRM the port that your arduino is connect to
+  myPort = new Serial(this, Serial.list()[7], 9600);
+  //myPort = new Serial(this, /dev/tty.usbmodemfd121, 9600); // CONFIRM the port that your arduino is connect to
   myPort.bufferUntil('\n');
 }
 
