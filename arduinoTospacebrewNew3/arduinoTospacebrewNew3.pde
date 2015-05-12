@@ -13,6 +13,7 @@ int magRotation = 0;
 boolean shutter = false;
 boolean bottleTriggered = false;
 boolean lampOn = false;
+boolean tvDistort = false;
 
 Spacebrew spacebrewConnection;  // Spacebrew connection object
 Serial myPort;          // Serial port object 
@@ -36,6 +37,7 @@ void setup() {
   // add subscriber
   spacebrewConnection.addSubscribe("bottleTrigger", "boolean"); 
   spacebrewConnection.addSubscribe("lampTrigger", "boolean"); 
+  spacebrewConnection.addSubscribe("tvGlitch", "boolean"); 
 
   // connect to spacebrew 
   spacebrewConnection.connect(server, name, description );
@@ -65,20 +67,29 @@ void draw() {
 
   if (bottleTriggered == true) 
   {                           //if we clicked in the window
-    myPort.write('1');         //send a 1
+    myNewPort.write('1');         //send a 1
     println("1");
-  } else 
+  } else if (bottleTriggered == false)
   {                           //otherwise
-      myPort.write('0');          //send a 0
+      myNewPort.write('0');          //send a 0
   } 
   
     if (lampOn == true) 
   {                           //if we clicked in the window
     myNewPort.write('2');         //send a 1
     println("2");
-  } else 
+  } else if(lampOn == false)
   {                           //otherwise
       myNewPort.write('3');          //send a 0
+  } 
+  
+   if (tvDistort == true) 
+  {                           //if we clicked in the window
+    myNewPort.write('4');         //send a 1
+    println("4");
+  } else if(tvDistort == false)
+  {                           //otherwise
+      myNewPort.write('5');          //send a 0
   } 
 
 
@@ -130,8 +141,13 @@ void onBooleanMessage( String name, boolean value ) {
     } else {
       lampOn = false;
     }
+  }else if (name.indexOf("tvGlitch") == 0){
+    if (value == true){
+      tvDistort = true;    
+    } else {
+      tvDistort = false;
+    }
   }
-  
   
   
 }
